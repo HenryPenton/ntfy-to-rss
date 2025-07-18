@@ -1,6 +1,6 @@
 require("dotenv").config();
 import { existsSync, readFileSync, writeFileSync } from "fs";
-import { IWebhookListener } from "./listenerinterface";
+import { IWebhookListener } from "./IWebhookListener";
 
 
 type NTFYMessage = { title: string; message: string };
