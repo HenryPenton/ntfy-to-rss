@@ -7,9 +7,8 @@ export class NTFYWebhookListener implements IWebhookListener {
   private webhookHandler = async (event: MessageEvent<any>) => {
     const { data } = event;
     const { message, title } = JSON.parse(data);
-    console.log(data);
+
     if (message && title) {
-      console.log({ message });
       this.messageWriter.writeProperty(title, message);
     }
   };
