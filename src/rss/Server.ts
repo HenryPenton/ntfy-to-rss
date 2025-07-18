@@ -1,8 +1,9 @@
 import express from "express";
-import { IServer } from "./iServer";
 import { readFileSync } from "fs";
 import path from "path";
-
+import { IServer } from "./iServer";
+import RSS from "rss";
+import { StoredMessages } from "../writers/JSONPropertyWriter";
 export class Server implements IServer {
   private app: express.Express;
 
@@ -14,15 +15,37 @@ export class Server implements IServer {
     this.setUpEndpoints();
   }
 
+  private buildFeed = (messages: StoredMessages) => {
+    const feed = new RSS({
+      title: "My feed",
+      feed_url: "",
+      site_url: "",
+    });
+
+    for (const [key, value] of Object.entries(messages)) {
+      feed.item({
+        title: `${key}: ${value}`,
+        description: value,
+        url: "",
+        date: new Date(),
+      });
+    }
+    return feed.xml();
+  };
+
   private setUpEndpoints = () => {
     this.app.get("/rss/:rssRoute", (req, res) => {
       const { rssRoute } = req.params;
-      console.log(`${path.join(this.fileRoot, rssRoute)}.json`);
-      const x = readFileSync(
+
+      const jsonFile = readFileSync(
         `${path.join(this.fileRoot, rssRoute)}.json`,
         "utf-8"
       );
-      res.json(JSON.parse(x));
+      const parsedJSON = JSON.parse(jsonFile);
+      const xmlMessages = this.buildFeed(parsedJSON);
+
+      res.set("Content-Type", "text/xml");
+      res.send(xmlMessages);
     });
   };
 

@@ -44,6 +44,8 @@
     "typescript": "5.x"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "@types/rss": "^0.0.32",
+    "express": "^5.1.0",
+    "rss": "^1.2.2"
   }
 }
