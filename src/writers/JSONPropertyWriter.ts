@@ -1,17 +1,18 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { IJSONMessageWriter } from "./IJSONPropertyWriter";
-
 export type StoredMessages = { [k: string]: string };
 
 export class JSONMessageWriter implements IJSONMessageWriter {
-  private readonly filePath = "./thing.json";
-  constructor() {
+  constructor(private readonly filePath: string) {
     this.ensureFileExists();
   }
 
   private ensureFileExists = () => {
     if (!existsSync(this.filePath)) {
+      console.log(this.filePath, "uh oh");
       writeFileSync(this.filePath, JSON.stringify({}, null, 2), "utf-8");
+    } else {
+      console.log("all good");
     }
   };
 
@@ -19,7 +20,7 @@ export class JSONMessageWriter implements IJSONMessageWriter {
     try {
       // Read current data
       const content = readFileSync(this.filePath, "utf-8");
-
+      console.log({ content });
       const data = JSON.parse(content);
 
       // Merge properties
