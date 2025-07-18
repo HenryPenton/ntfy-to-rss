@@ -1,0 +1,48 @@
+{
+  "name": "ntfy-to-rss",
+  "version": "0.0.1",
+  "description": "ntfy to rss feed generator",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.(t|j)sx?$": "@swc/jest"
+    },
+    "testPathIgnorePatterns": [
+      "<rootDir>/__tests__/mockingFunctions/mocks.ts",
+      "<rootDir>/old"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec|steps))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "restoreMocks": true,
+    "clearMocks": true,
+    "resetMocks": true
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "author": "Henry Penton",
+  "license": "MIT",
+  "devDependencies": {
+    "@swc/core": "1.x",
+    "@swc/jest": "0.x",
+    "@types/node": "^24.0.14",
+    "dotenv": "^17.2.0",
+    "jest": "30.x",
+    "typescript": "5.x"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

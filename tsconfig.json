@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node 20",
+  "compilerOptions": {
+    "lib": ["es2022", "DOM"],
+    "module": "commonjs",
+    "target": "es2022",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist"
+  },
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "**/__tests__/*",
+    "**/__mocks__/*",
+    "src/**/*.test.ts"
+  ]
+}
