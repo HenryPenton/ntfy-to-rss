@@ -1,12 +1,13 @@
 require("dotenv").config();
 import { existsSync, readFileSync, writeFileSync } from "fs";
-import { WebhookListener } from "./webhook-listener";
+import { IWebhookListener } from "./listenerinterface";
+
 
 type NTFYMessage = { title: string; message: string };
 type StoredMessages = { [k: string]: string };
 
-export class NTFYWebhookListener implements WebhookListener {
-  private readonly filePath = "/Users/henry/projects/ntfy-to-rss/thing.json";
+export class NTFYWebhookListener implements IWebhookListener {
+  private readonly filePath = "./thing.json";
   constructor() {
     this.ensureFileExists();
   }
