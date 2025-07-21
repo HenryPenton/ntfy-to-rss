@@ -1,11 +1,9 @@
 import express from "express";
 import { readFileSync } from "fs";
 import path from "path";
-import { IServer } from "./iServer";
 import RSS from "rss";
 import { Messages } from "../listeners/NTFYWebhookListener";
-
-import crypto from "crypto";
+import { IServer } from "./iServer";
 
 export class Server implements IServer {
   private app: express.Express;
@@ -26,22 +24,21 @@ export class Server implements IServer {
     });
 
     for (const [key, value] of Object.entries(messages)) {
-      const guid = crypto.randomUUID();
+      const { guid, message, time } = value;
       feed.item({
-        title: `${key}: ${value.message}`,
-        description: value.message,
-        url: `https://duckduckgo.com/${guid}`,
-        date: new Date(value.time * 1000),
-        guid,
+        title: `${key}: ${message}`,
+        description: message,
+        url: path.join(process.env.SITE_URL || "", `/message/${guid}.json`),
+        date: new Date(time * 1000),
+        guid: guid,
       });
     }
     return feed.xml({ indent: true });
   };
 
   private setUpEndpoints = () => {
-    this.app.get("/rss/:rssFeed.xml", (req, res) => {
-      const { rssFeed } = req.params;
-      const messagesPath = `${path.join(this.fileRoot, rssFeed)}.json`;
+    this.app.get("/rss/feed.xml", (req, res) => {
+      const messagesPath = `${path.join(this.fileRoot, "messages")}.json`;
 
       const jsonFile = readFileSync(messagesPath, "utf-8");
       const parsedJSON = JSON.parse(jsonFile);
@@ -49,6 +46,22 @@ export class Server implements IServer {
 
       res.setHeader("Content-Type", "application/xml");
       res.send(xmlMessages);
+    });
+
+    this.app.get("/message/:message.json", (req, res) => {
+      const { message } = req.params;
+      const messagesPath = `${path.join(this.fileRoot, "messages")}.json`;
+
+      const jsonFile = readFileSync(messagesPath, "utf-8");
+      const parsedJSON: Messages = JSON.parse(jsonFile);
+
+      const messageMap = new Map<string, Messages[number]>();
+
+      for (const [key, value] of Object.entries(parsedJSON)) {
+        messageMap.set(value.guid, value);
+      }
+
+      res.json(messageMap.get(message));
     });
   };
 

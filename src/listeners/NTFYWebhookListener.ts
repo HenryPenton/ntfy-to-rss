@@ -1,6 +1,10 @@
+import crypto from "crypto";
 import { JSONMessageWriter } from "../writers/JSONPropertyWriter";
 import { IWebhookListener } from "./IWebhookListener";
-export type Messages = { [k: string]: { message: string; time: number } };
+
+export type Messages = {
+  [k: string]: { message: string; time: number; guid: string };
+};
 
 export class NTFYWebhookListener implements IWebhookListener {
   constructor(private readonly messageWriter: JSONMessageWriter) {}
@@ -8,9 +12,10 @@ export class NTFYWebhookListener implements IWebhookListener {
   private webhookHandler = async (event: MessageEvent<any>) => {
     const { data } = event;
     const { message, title, time } = JSON.parse(data);
+    const guid = crypto.randomUUID();
 
     if (message && title) {
-      this.messageWriter.writeMessage({ [title]: { message, time } });
+      this.messageWriter.writeMessage({ [title]: { message, time, guid } });
     }
   };
 
