@@ -1,15 +1,16 @@
 import { JSONMessageWriter } from "../writers/JSONPropertyWriter";
 import { IWebhookListener } from "./IWebhookListener";
+export type Messages = { [k: string]: { message: string; time: number } };
 
 export class NTFYWebhookListener implements IWebhookListener {
   constructor(private readonly messageWriter: JSONMessageWriter) {}
 
   private webhookHandler = async (event: MessageEvent<any>) => {
     const { data } = event;
-    const { message, title } = JSON.parse(data);
+    const { message, title, time } = JSON.parse(data);
 
     if (message && title) {
-      this.messageWriter.writeProperty(title, message);
+      this.messageWriter.writeMessage({ [title]: { message, time } });
     }
   };
 

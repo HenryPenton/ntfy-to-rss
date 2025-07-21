@@ -1,3 +1,5 @@
+import { Messages } from "../listeners/NTFYWebhookListener";
+
 export interface IJSONMessageWriter {
-  writeProperty: (key: string, value: string) => void;
+  writeMessage: (message:Messages) => void;
 }

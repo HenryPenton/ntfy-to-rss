@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { IJSONMessageWriter } from "./IJSONPropertyWriter";
-export type StoredMessages = { [k: string]: string };
+import { Messages } from "../listeners/NTFYWebhookListener";
 
 export class JSONMessageWriter implements IJSONMessageWriter {
   constructor(private readonly filePath: string) {
@@ -13,18 +13,14 @@ export class JSONMessageWriter implements IJSONMessageWriter {
     }
   };
 
-  writeProperty = (key: string, value: string) => {
+  writeMessage = (message: Messages) => {
     try {
       // Read current data
       const content = readFileSync(this.filePath, "utf-8");
 
       const data = JSON.parse(content);
 
-      // Merge properties
-      const newMessage: StoredMessages = {};
-      newMessage[key] = value;
-
-      const merged = { ...data, ...newMessage };
+      const merged = { ...data, ...message };
 
       writeFileSync(this.filePath, JSON.stringify(merged, null, 2), "utf-8");
 
