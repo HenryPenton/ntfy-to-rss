@@ -28,7 +28,7 @@ export class Server implements IServer {
       feed.item({
         title: `${key}: ${message}`,
         description: message,
-        url: path.join(process.env.SITE_URL || "", `/message/${guid}.json`),
+        url: path.join(`/message/${guid}.json`),
         date: new Date(time * 1000),
         guid: guid,
       });
