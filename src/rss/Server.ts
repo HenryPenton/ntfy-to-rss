@@ -19,8 +19,8 @@ export class Server implements IServer {
   private buildFeed = (messages: Messages) => {
     const feed = new RSS({
       title: "My feed",
-      feed_url: "",
-      site_url: "",
+      feed_url: process.env.SITE_URL || "",
+      site_url: process.env.SITE_URL || "",
     });
 
     for (const [key, value] of Object.entries(messages)) {
