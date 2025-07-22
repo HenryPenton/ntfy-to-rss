@@ -1,7 +1,5 @@
-import crypto from "crypto";
-import { JSONMessageWriter } from "../writers/JSONPropertyWriter";
+import { IJSONMessageWriter } from "../writers/IJSONPropertyWriter";
 import { IWebhookListener } from "./IWebhookListener";
-import { IConfiguration } from "../configuration";
 
 export type Messages = {
   [k: string]: { id: string; message: string; time: number };
@@ -9,8 +7,8 @@ export type Messages = {
 
 export class NTFYWebhookListener implements IWebhookListener {
   constructor(
-    private readonly messageWriter: JSONMessageWriter,
-    private readonly configuration: IConfiguration
+    private readonly messageWriter: IJSONMessageWriter,
+    private messageSocket: WebSocket
   ) {}
 
   private webhookHandler = async (event: MessageEvent<any>) => {
@@ -23,9 +21,6 @@ export class NTFYWebhookListener implements IWebhookListener {
   };
 
   listen = () => {
-    const TOPIC = this.configuration.getConfigurationVariable("ntfyTopic");
-    const socket = new WebSocket(`wss://ntfy.sh/${TOPIC}/ws`);
-
-    socket.addEventListener("message", this.webhookHandler);
+    this.messageSocket.addEventListener("message", this.webhookHandler);
   };
 }

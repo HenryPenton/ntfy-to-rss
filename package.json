@@ -38,13 +38,14 @@
     "@swc/core": "1.x",
     "@swc/jest": "0.x",
     "@types/express": "^5.0.3",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.0.14",
+    "@types/rss": "^0.0.32",
     "dotenv": "^17.2.0",
     "jest": "30.x",
     "typescript": "5.x"
   },
   "dependencies": {
-    "@types/rss": "^0.0.32",
     "config-captain": "^2.1.2",
     "express": "^5.1.0",
     "rss": "^1.2.2"
