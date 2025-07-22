@@ -19,11 +19,15 @@ export class Server implements IServer {
   }
 
   private buildFeed = (messages: Messages) => {
-    const siteUrl = this.configuration.getConfigurationVariable("siteURL");
+    const siteUrlString =
+      this.configuration.getConfigurationVariable("siteURL");
+    const siteUrl = new URL(siteUrlString);
+    const feedUrl = new URL("/rss/feed.xml", siteUrlString);
+
     const feed = new RSS({
       title: "My feed",
-      feed_url: siteUrl,
-      site_url: siteUrl,
+      feed_url: feedUrl.href,
+      site_url: siteUrl.href,
     });
 
     for (const [key, value] of Object.entries(messages)) {
@@ -31,7 +35,7 @@ export class Server implements IServer {
       feed.item({
         title: `${key}: ${message}`,
         description: message,
-        url: path.join(`/message/${id}.json`),
+        url: `/message/${id}.json`,
         date: new Date(time * 1000),
         guid: id,
       });
@@ -65,6 +69,10 @@ export class Server implements IServer {
       }
 
       res.json(messageMap.get(message));
+    });
+
+    this.app.get("/", (req, res) => {
+      res.redirect("/rss/feed.xml");
     });
   };
 

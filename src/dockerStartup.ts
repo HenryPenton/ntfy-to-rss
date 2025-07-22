@@ -3,7 +3,7 @@ import { NTFYWebhookListener } from "./listeners/NTFYWebhookListener";
 import { Server } from "./rss/Server";
 import { JSONMessageWriter } from "./writers/JSONPropertyWriter";
 
-const messageLocation = "/app/messages.json";
+const messageLocation = "/app/messages/messages.json";
 const TOPIC = config.getConfigurationVariable("ntfyTopic");
 const socket = new WebSocket(`wss://ntfy.sh/${TOPIC}/ws`);
 

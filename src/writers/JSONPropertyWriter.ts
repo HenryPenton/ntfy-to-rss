@@ -1,6 +1,7 @@
-import { existsSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from "fs";
 import { IJSONMessageWriter } from "./IJSONPropertyWriter";
 import { Messages } from "../listeners/NTFYWebhookListener";
+import path from "path";
 
 export class JSONMessageWriter implements IJSONMessageWriter {
   constructor(private readonly filePath: string) {
@@ -9,6 +10,8 @@ export class JSONMessageWriter implements IJSONMessageWriter {
 
   private ensureFileExists = () => {
     if (!existsSync(this.filePath)) {
+      const dir = path.dirname(this.filePath);
+      mkdirSync(dir, { recursive: true });
       writeFileSync(this.filePath, JSON.stringify({}, null, 2), "utf-8");
     }
   };
