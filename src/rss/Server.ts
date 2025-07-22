@@ -27,13 +27,13 @@ export class Server implements IServer {
     });
 
     for (const [key, value] of Object.entries(messages)) {
-      const { guid, message, time } = value;
+      const { id, message, time } = value;
       feed.item({
         title: `${key}: ${message}`,
         description: message,
-        url: path.join(`/message/${guid}.json`),
+        url: path.join(`/message/${id}.json`),
         date: new Date(time * 1000),
-        guid: guid,
+        guid: id,
       });
     }
     return feed.xml({ indent: true });
@@ -61,7 +61,7 @@ export class Server implements IServer {
       const messageMap = new Map<string, Messages[number]>();
 
       for (const [key, value] of Object.entries(parsedJSON)) {
-        messageMap.set(value.guid, value);
+        messageMap.set(value.id, value);
       }
 
       res.json(messageMap.get(message));
