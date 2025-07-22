@@ -4,23 +4,26 @@ import path from "path";
 import RSS from "rss";
 import { Messages } from "../listeners/NTFYWebhookListener";
 import { IServer } from "./iServer";
+import { IConfiguration } from "../configuration";
 
 export class Server implements IServer {
   private app: express.Express;
 
   constructor(
     private readonly port: number,
-    private readonly fileRoot: string
+    private readonly messageLocation: string,
+    private readonly configuration: IConfiguration
   ) {
     this.app = express();
     this.setUpEndpoints();
   }
 
   private buildFeed = (messages: Messages) => {
+    const siteUrl = this.configuration.getConfigurationVariable("siteURL");
     const feed = new RSS({
       title: "My feed",
-      feed_url: process.env.SITE_URL || "",
-      site_url: process.env.SITE_URL || "",
+      feed_url: siteUrl,
+      site_url: siteUrl,
     });
 
     for (const [key, value] of Object.entries(messages)) {
@@ -38,7 +41,7 @@ export class Server implements IServer {
 
   private setUpEndpoints = () => {
     this.app.get("/rss/feed.xml", (req, res) => {
-      const messagesPath = `${path.join(this.fileRoot, "messages")}.json`;
+      const messagesPath = this.messageLocation;
 
       const jsonFile = readFileSync(messagesPath, "utf-8");
       const parsedJSON = JSON.parse(jsonFile);
@@ -50,7 +53,7 @@ export class Server implements IServer {
 
     this.app.get("/message/:message.json", (req, res) => {
       const { message } = req.params;
-      const messagesPath = `${path.join(this.fileRoot, "messages")}.json`;
+      const messagesPath = this.messageLocation;
 
       const jsonFile = readFileSync(messagesPath, "utf-8");
       const parsedJSON: Messages = JSON.parse(jsonFile);
