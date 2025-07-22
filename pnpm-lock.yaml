@@ -11,6 +11,9 @@ importers:
       '@types/rss':
         specifier: ^0.0.32
         version: 0.0.32
+      config-captain:
+        specifier: ^2.1.2
+        version: 2.1.2
       express:
         specifier: ^5.1.0
         version: 5.1.0
@@ -749,6 +752,9 @@ packages:
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+
+  config-captain@2.1.2:
+    resolution: {integrity: sha512-8f3UuNvEXA6k4G5Riez0+KckvJ4WZAYdjgPJWZWxqfRlquuOV31vtUYq1e4YAtLYBSTIwE/SQrhvCBK2Ec3REA==}
 
   content-disposition@1.0.0:
     resolution: {integrity: sha512-Au9nRL8VNUut/XSzbQA38+M78dzP4D+eqg3gfJHMIHHYa3bg067xj1KxMUWj+VULbiZMowKngFFbKczUrNJ1mg==}
@@ -2505,6 +2511,8 @@ snapshots:
   color-name@1.1.4: {}
 
   concat-map@0.0.1: {}
+
+  config-captain@2.1.2: {}
 
   content-disposition@1.0.0:
     dependencies:

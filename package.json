@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@types/rss": "^0.0.32",
+    "config-captain": "^2.1.2",
     "express": "^5.1.0",
     "rss": "^1.2.2"
   }
