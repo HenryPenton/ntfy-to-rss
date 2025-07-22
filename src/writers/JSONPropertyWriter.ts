@@ -29,6 +29,7 @@ export class JSONMessageWriter implements IJSONMessageWriter {
 
   writeMessage = (message: Messages) => {
     try {
+      this.ensureFileExists();
       // Read current data
       const content = this.fileReader(this.filePath, "utf-8");
 
