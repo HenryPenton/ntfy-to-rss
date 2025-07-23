@@ -14,7 +14,7 @@ export class JSONMessageWriter implements IJSONMessageWriter {
   private ensureFileExists = () => {
     if (!this.fileSystem.checkExists(this.filePath)) {
       this.fileSystem.makeDirectory(this.filePath);
-      this.fileSystem.writeJSONFile(this.filePath, JSON.stringify({}, null, 2));
+      this.fileSystem.writeJSONFile(this.filePath, {});
     }
   };
 
@@ -24,7 +24,7 @@ export class JSONMessageWriter implements IJSONMessageWriter {
       const content = this.fileSystem.readJSONFile(this.filePath);
       const data = JSON.parse(content);
       const merged = { ...data, ...message };
-      this.fileSystem.writeJSONFile(this.filePath, JSON.stringify(merged, null, 2));
+      this.fileSystem.writeJSONFile(this.filePath, merged);
 
       console.log("✅ File updated successfully.");
     } catch (err) {
