@@ -6,8 +6,8 @@ export type DirectoryMaker = typeof mkdirSync;
 export type ExistsChecker = typeof existsSync;
 
 export interface IFileSystem {
-  read: (filePath: string) => string;
-  write: (filePath: string, JSONMessage: Object) => void;
+  readJSONFile: (filePath: string) => string;
+  writeJSONFile: (filePath: string, JSONMessage: Object) => void;
   makeDirectory: (dir: string) => void;
   checkExists: (filePath: string) => boolean;
 }
