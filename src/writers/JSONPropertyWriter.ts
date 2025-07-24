@@ -1,43 +1,30 @@
 import path from "path";
 import { Messages } from "../listeners/NTFYWebhookListener";
-import {
-  DirectoryMaker,
-  ExistsChecker,
-  FileReader,
-  FileWriter,
-  IJSONMessageWriter,
-} from "./IJSONPropertyWriter";
+import { IJSONMessageWriter } from "./IJSONPropertyWriter";
+import { IFileSystem } from "../fileSystem/IFileSystem";
 
 export class JSONMessageWriter implements IJSONMessageWriter {
   constructor(
     private readonly filePath: string,
-    private readonly fileReader: FileReader,
-    private readonly fileWriter: FileWriter,
-    private readonly directoryMaker: DirectoryMaker,
-    private readonly existsChecker: ExistsChecker
+    private readonly fileSystem: IFileSystem
   ) {
     this.ensureFileExists();
   }
 
   private ensureFileExists = () => {
-    if (!this.existsChecker(this.filePath)) {
-      const dir = path.dirname(this.filePath);
-      this.directoryMaker(dir, { recursive: true });
-      this.fileWriter(this.filePath, JSON.stringify({}, null, 2), "utf-8");
+    if (!this.fileSystem.checkExists(this.filePath)) {
+      this.fileSystem.makeDirectory(this.filePath);
+      this.fileSystem.writeJSONFile(this.filePath, {});
     }
   };
 
   writeMessage = (message: Messages) => {
     try {
       this.ensureFileExists();
-      // Read current data
-      const content = this.fileReader(this.filePath, "utf-8");
-
-      const data = JSON.parse(content);
-
+      const data = this.fileSystem.readJSONFile(this.filePath);
+      
       const merged = { ...data, ...message };
-
-      this.fileWriter(this.filePath, JSON.stringify(merged, null, 2), "utf-8");
+      this.fileSystem.writeJSONFile(this.filePath, merged);
 
       console.log("✅ File updated successfully.");
     } catch (err) {
