@@ -14,11 +14,15 @@ export class NodeFileSystem implements IFileSystem {
     private readonly directoryMaker: DirectoryMaker,
     private readonly existsChecker: ExistsChecker
   ) {}
-  readJSONFile = (filePath: string) =>
-    JSON.parse(this.fileReader(filePath, "utf-8"));
 
-  writeJSONFile = (filePath: string, JSONBlob: Object) =>
+  readJSONFile = (filePath: string) => {
+    return JSON.parse(this.fileReader(filePath, "utf-8"));
+  };
+
+  writeJSONFile = (filePath: string, JSONBlob: Object) => {
+    console.log({ JSONBlob });
     this.fileWriter(filePath, JSON.stringify(JSONBlob, null, 2), "utf-8");
+  };
 
   makeDirectory = (filePath: string) => {
     const dir = path.dirname(filePath);

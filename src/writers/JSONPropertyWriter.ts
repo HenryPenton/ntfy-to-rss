@@ -21,8 +21,8 @@ export class JSONMessageWriter implements IJSONMessageWriter {
   writeMessage = (message: Messages) => {
     try {
       this.ensureFileExists();
-      const content = this.fileSystem.readJSONFile(this.filePath);
-      const data = JSON.parse(content);
+      const data = this.fileSystem.readJSONFile(this.filePath);
+      
       const merged = { ...data, ...message };
       this.fileSystem.writeJSONFile(this.filePath, merged);
 

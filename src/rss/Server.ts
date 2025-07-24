@@ -1,10 +1,9 @@
 import express from "express";
 import { readFileSync } from "fs";
-import path from "path";
 import RSS from "rss";
+import { IConfiguration } from "../configuration";
 import { Messages } from "../listeners/NTFYWebhookListener";
 import { IServer } from "./iServer";
-import { IConfiguration } from "../configuration";
 
 export class Server implements IServer {
   private app: express.Express;
