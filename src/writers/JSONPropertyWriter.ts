@@ -12,8 +12,8 @@ export class JSONMessageWriter implements IJSONMessageWriter {
   }
 
   private ensureFileExists = () => {
-    if (!this.fileSystem.checkExists(this.filePath)) {
-      this.fileSystem.makeDirectory(this.filePath);
+    if (!this.fileSystem.checkFileExists(this.filePath)) {
+      this.fileSystem.makeDirectoryForFile(this.filePath);
       this.fileSystem.writeJSONFile(this.filePath, {});
     }
   };

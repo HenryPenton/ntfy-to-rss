@@ -20,15 +20,20 @@ export class NodeFileSystem implements IFileSystem {
   };
 
   writeJSONFile = (filePath: string, JSONBlob: Object) => {
-    console.log({ JSONBlob });
-    this.fileWriter(filePath, JSON.stringify(JSONBlob, null, 2), "utf-8");
+    this.fileWriter(filePath, JSON.stringify(JSONBlob), "utf-8");
   };
 
-  makeDirectory = (filePath: string) => {
+  makeDirectoryForFile = (filePath: string) => {
     const dir = path.dirname(filePath);
 
     this.directoryMaker(dir, { recursive: true });
   };
 
-  checkExists = (filePath: string) => this.existsChecker(filePath);
+  checkFileExists = (filePath: string) => {
+    return this.checkExists(filePath);
+  };
+
+  private checkExists(filePath: string) {
+    return this.existsChecker(filePath);
+  }
 }

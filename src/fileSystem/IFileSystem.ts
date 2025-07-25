@@ -8,6 +8,6 @@ export type ExistsChecker = typeof existsSync;
 export interface IFileSystem {
   readJSONFile: (filePath: string) => Object;
   writeJSONFile: (filePath: string, JSONMessage: Object) => void;
-  makeDirectory: (dir: string) => void;
-  checkExists: (filePath: string) => boolean;
+  makeDirectoryForFile: (dir: string) => void;
+  checkFileExists: (filePath: string) => boolean;
 }
