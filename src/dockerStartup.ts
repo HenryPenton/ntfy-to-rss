@@ -1,6 +1,9 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { config } from "./configuration";
-import { NTFYWebhookListener } from "./listeners/NTFYWebhookListener";
+import {
+  createWebhookHandler,
+  NTFYWebhookListener,
+} from "./listeners/NTFYWebhookListener";
 import { Server } from "./rss/Server";
 import { JSONMessageWriter } from "./writers/JSONPropertyWriter";
 import { NodeFileSystem } from "./fileSystem/NodeFileSystem";
@@ -14,10 +17,11 @@ const fileSystem = new NodeFileSystem(
   mkdirSync,
   existsSync
 );
-const ntfy = new NTFYWebhookListener(
-  new JSONMessageWriter(messageLocation, fileSystem),
-  socket
+
+const webhookHandler = createWebhookHandler(
+  new JSONMessageWriter(messageLocation, fileSystem)
 );
+const ntfy = new NTFYWebhookListener(socket, webhookHandler);
 const server = new Server(3000, messageLocation, config);
 
 ntfy.listen();
